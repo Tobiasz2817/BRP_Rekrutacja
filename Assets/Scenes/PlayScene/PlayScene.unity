@@ -137,12 +137,31 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 8146150603569056819}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 338302413}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1aa08ab6e0800fa44ae55d278d1423e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &338302413 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8146150604192596827, guid: e56bfdd5b40390546bd93dc024a6c032,
+    type: 3}
+  m_PrefabInstance: {fileID: 8146150603569056819}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &338302417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 338302413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27e125b39c314c3b95a1576ca9b36ad5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gridScroll: {fileID: 298254113}
 --- !u!850595691 &352684285
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -3475,6 +3494,10 @@ PrefabInstance:
       insertIndex: 2
       addedObject: {fileID: 489983861}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8146150604192596827, guid: e56bfdd5b40390546bd93dc024a6c032,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 338302417}
     - targetCorrespondingSourceObject: {fileID: 8373632328407884172, guid: e56bfdd5b40390546bd93dc024a6c032,
         type: 3}
       insertIndex: 1

@@ -29,14 +29,14 @@ namespace Controllers
         public static event Action<uint> OnScoreChanged; 
         
         void Awake() => ConnectCallbacks();
-        void OnDestroy() => UnConnectCallbacks();
+        void OnDestroy() => DisconnectCallbacks();
         
         void ConnectCallbacks()
         {
             GameEvents.EnemyKilled += UpdateScore;
         }
 
-        void UnConnectCallbacks()
+        void DisconnectCallbacks()
         {
             GameEvents.EnemyKilled -= UpdateScore;
         }

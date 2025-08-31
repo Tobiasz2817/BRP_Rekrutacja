@@ -35,7 +35,7 @@ namespace Ui
 
         public static void Disable()
         {
-            UnConnectCallbacks();
+            DisconnectCallbacks();
         }
 
         static void ConnectCallbacks()
@@ -44,7 +44,7 @@ namespace Ui
             _inputModule.leftClick.action.performed += HandleLeftClickAction;
         }
         
-        static void UnConnectCallbacks()
+        static void DisconnectCallbacks()
         {
             _inputModule.move.action.performed -= HandleMoveAction;
             _inputModule.leftClick.action.performed -= HandleLeftClickAction;
@@ -78,7 +78,7 @@ namespace Ui
             {   
                 EnableMouse();
                 
-                _eventSystem.SetSelectedGameObject(null);
+                _eventSystem.SetSelectedGameObject(null, null);
             }
         }
 
