@@ -2,50 +2,53 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PopUpScreenBlocker : MonoBehaviour
+namespace Ui
 {
-    [SerializeField] private Image ScreenBlocker;
-    private List<PopUpView> _activePopUps;
-    private bool _initDone;
-
-    private void Awake()
+    public class PopUpScreenBlocker : MonoBehaviour
     {
-        if (_initDone) return;
-        _activePopUps = new List<PopUpView>();
-        ScreenBlocker.enabled = false;
-    }
+        [SerializeField] private Image ScreenBlocker;
+        private List<PopUpView> _activePopUps;
+        private bool _initDone;
 
-    public void InitBlocker()
-    {
-        _initDone = true;
-        ScreenBlocker.enabled = false;
-        _activePopUps = new List<PopUpView>();
-        gameObject.SetActive(true);
-    }
-
-
-    public void AddPopUpView(PopUpView popUp)
-    {
-        if (!_activePopUps.Contains(popUp))
+        private void Awake()
         {
-            _activePopUps.Add(popUp);
+            if (_initDone) return;
+            _activePopUps = new List<PopUpView>();
+            ScreenBlocker.enabled = false;
         }
 
-        UpdateScreenBlockerState();
-    }
-
-    public void RemovePopUpView(PopUpView popUp)
-    {
-        if (_activePopUps.Contains(popUp))
+        public void InitBlocker()
         {
-            _activePopUps.Remove(popUp);
+            _initDone = true;
+            ScreenBlocker.enabled = false;
+            _activePopUps = new List<PopUpView>();
+            gameObject.SetActive(true);
         }
 
-        UpdateScreenBlockerState();
-    }
 
-    public void UpdateScreenBlockerState()
-    {
-        ScreenBlocker.enabled = _activePopUps.Count > 0;
+        public void AddPopUpView(PopUpView popUp)
+        {
+            if (!_activePopUps.Contains(popUp))
+            {
+                _activePopUps.Add(popUp);
+            }
+
+            UpdateScreenBlockerState();
+        }
+
+        public void RemovePopUpView(PopUpView popUp)
+        {
+            if (_activePopUps.Contains(popUp))
+            {
+                _activePopUps.Remove(popUp);
+            }
+
+            UpdateScreenBlockerState();
+        }
+
+        public void UpdateScreenBlockerState()
+        {
+            ScreenBlocker.enabled = _activePopUps.Count > 0;
+        }
     }
 }

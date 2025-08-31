@@ -1,7 +1,8 @@
-﻿using UnityEngine.UI;
+﻿using Controllers;
 using UnityEngine;
+using UnityEngine.UI;
 
-namespace UI
+namespace Ui
 {
     [DefaultExecutionOrder(-100)]
     [RequireComponent(typeof(GraphicRaycaster))]
@@ -20,7 +21,6 @@ namespace UI
         }
 
         #endregion
-
         
         [Header("References")]
         [SerializeField] private GameObject DisableOnStartObject;
@@ -28,7 +28,7 @@ namespace UI
         [SerializeField] private GameObject InGameGuiObject;
         [SerializeField] private PopUpView PopUp;
         [SerializeField] private PopUpScreenBlocker ScreenBlocker;
-
+        
         private void Start()
         {
             if (ScreenBlocker) ScreenBlocker.InitBlocker();
@@ -59,11 +59,13 @@ namespace UI
             viewToActive.ActiveView(() =>
             {
                 ActiveInGameGUI(true);
+                GameEvents.ChangeEnemyNavigation?.Invoke(Navigation.Mode.Automatic);
             });
 
             ActiveInGameGUI(false);
+            
             GameController.Instance.IsPaused = true;
-        
+            GameEvents.ChangeEnemyNavigation?.Invoke(Navigation.Mode.None);
             SelectionService.Select(viewToActive.GetBackButton().gameObject, true);
         }
 

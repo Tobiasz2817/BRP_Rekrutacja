@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using UnityEngine.InputSystem.UI;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
-using UnityEngine;
 
-namespace UI
+namespace Ui
 {
     public static class MouseHoverController
     {

@@ -6,7 +6,7 @@ using UnityEngine.Assertions;
 using UnityEngine.UI;
 using UnityEngine;
 
-namespace UI
+namespace Ui
 {
     public static class SelectionService
     {
@@ -28,27 +28,48 @@ namespace UI
             
             _eventSystem = EventSystem.current;
             _selections = new();
-
             _raycaster = raycaster;
-            
-            _inputModule.move.action.performed += _ =>
-            {
-                DisableMouse();
+
+            ConnectCallbacks();
+        }
+
+        public static void Disable()
+        {
+            UnConnectCallbacks();
+        }
+
+        static void ConnectCallbacks()
+        {
+            _inputModule.move.action.performed += HandleMoveAction;
+            _inputModule.leftClick.action.performed += HandleLeftClickAction;
+        }
+        
+        static void UnConnectCallbacks()
+        {
+            _inputModule.move.action.performed -= HandleMoveAction;
+            _inputModule.leftClick.action.performed -= HandleLeftClickAction;
+        }
+
+        static void HandleMoveAction(InputAction.CallbackContext _)
+        {
+            DisableMouse();
                 
-                if (!_eventSystem.currentSelectedGameObject)
-                    _eventSystem.SetSelectedGameObject(_selection ?? _eventSystem.firstSelectedGameObject);
-                else
-                    _selection = _eventSystem.currentSelectedGameObject;
-            };
-            
-            _inputModule.leftClick.action.performed += _ =>
+            if (!_eventSystem.currentSelectedGameObject)
             {
-                if (_eventSystem.currentSelectedGameObject)
-                    _selection = _eventSystem.currentSelectedGameObject;
+                GameObject toSelect = _selection ?? GetPrevious() ?? _eventSystem.firstSelectedGameObject;
+                _eventSystem.SetSelectedGameObject(toSelect);
+            }
+            else
+                _selection = _eventSystem.currentSelectedGameObject;
+        }
+        
+        static void HandleLeftClickAction(InputAction.CallbackContext _)
+        {
+            if (_eventSystem.currentSelectedGameObject)
+                _selection = _eventSystem.currentSelectedGameObject;
                 
-                if (!_isSelectableActive)
-                    _eventSystem.SetSelectedGameObject(null);
-            };
+            if (!_isSelectableActive)
+                _eventSystem.SetSelectedGameObject(null);
         }
 
         public static void Tick()
@@ -71,27 +92,34 @@ namespace UI
                 _eventSystem.SetSelectedGameObject(_selection);       
         }
         
-        public static void SaveSelection(GameObject selection) => 
+        public static void SaveSelection(GameObject selection)
+        {
             _selections.Add(selection);
+        }
 
         public static void SelectPrevious()
         {
             Assert.IsTrue(_selections.Count > 0, "Selections array cannot be empty");
             
+            _selection = GetPrevious(true);
+            
+            if (_isSelectableActive)
+                _eventSystem.SetSelectedGameObject(_selection);
+        }
+        
+        static GameObject GetPrevious(bool onlyActive = true)
+        {
             GameObject last = null;
             for (int i = _selections.Count - 1; i >= 0; i--)
             {
                 last = _selections[i];
                 _selections.RemoveAt(i);
                 
-                if (last.activeInHierarchy)
+                if (!onlyActive || last.activeInHierarchy)
                     break;
             }
-            
-            _selection = last;
-            
-            if (_isSelectableActive)
-                _eventSystem.SetSelectedGameObject(last);
+
+            return last;
         }
 
         static void EnableMouse()

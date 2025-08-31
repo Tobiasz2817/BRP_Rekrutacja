@@ -1,12 +1,11 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
-namespace UI
+namespace Ui
 {
     [RequireComponent(typeof(GridLayoutGroup))]
     public class GridAutoScroll : MonoBehaviour

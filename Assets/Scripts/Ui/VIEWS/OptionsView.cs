@@ -1,3 +1,6 @@
-﻿public class OptionsView : UiView
+﻿namespace Ui
 {
+    public class OptionsView : UiView
+    {
+    }
 }
