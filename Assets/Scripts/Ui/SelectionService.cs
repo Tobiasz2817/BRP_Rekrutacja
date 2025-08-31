@@ -54,33 +54,22 @@ namespace Ui
         {
             DisableMouse();
                 
-            Debug.Log("HANDLE MOVE " + _selection + " CUR: " + _eventSystem.currentSelectedGameObject);
-            
             if (!_eventSystem.currentSelectedGameObject)
             {
                 GameObject toSelect = _selection ?? GetPrevious(false) ?? _eventSystem.firstSelectedGameObject;
-                
                 _eventSystem.SetSelectedGameObject(toSelect);
-                
-                Debug.Log("HANDLE MOVE TS " + toSelect + " CUR: " + _eventSystem.currentSelectedGameObject);
             }
             else
                 _selection = _eventSystem.currentSelectedGameObject;
-            
-            Debug.Log("HANDLE MOVE " + _selection + " CUR: " + _eventSystem.currentSelectedGameObject);
         }
         
         static void HandleLeftClickAction(InputAction.CallbackContext _)
         {
-            Debug.Log("HANDLE LEFT CLICK " + _selection + " CUR: " + _eventSystem.currentSelectedGameObject);
-            
             if (_eventSystem.currentSelectedGameObject)
                 _selection = _eventSystem.currentSelectedGameObject;
                 
             if (!_isSelectableActive)
                 _eventSystem.SetSelectedGameObject(null);
-            
-            Debug.Log("HANDLE LEFT CLICK " + _selection + " CUR: " + _eventSystem.currentSelectedGameObject);
         }
 
         public static void Tick()
@@ -95,8 +84,6 @@ namespace Ui
 
         public static void Select(GameObject selection, bool savePrevious = true)
         {
-            Debug.Log("SELECT SELECTION " + selection + " PREV: " + _selection + " " + _selection?.transform.GetSiblingIndex() + " SV: " + savePrevious);
-            
             if (savePrevious) SaveSelection(_selection);
             
             _selection = selection;
@@ -107,8 +94,6 @@ namespace Ui
         
         public static void SaveSelection(GameObject selection)
         {
-            Debug.Log("SAVING SELECTION " + selection + " " + selection?.transform.GetSiblingIndex());
-            
             _selections.Add(selection);
         }
 
@@ -117,8 +102,6 @@ namespace Ui
             Assert.IsTrue(_selections.Count > 0, "Selections array cannot be empty");
             
             _selection = GetPrevious(true);
-            
-            Debug.Log("SELECT PREV " + _selection);
             
             if (_isSelectableActive)
                 _eventSystem.SetSelectedGameObject(_selection);
