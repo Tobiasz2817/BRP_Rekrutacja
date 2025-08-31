@@ -1,6 +1,6 @@
-using Controllers;
 using UnityEngine.UI;
 using UnityEngine;
+using Controllers;
 
 namespace Ui
 {

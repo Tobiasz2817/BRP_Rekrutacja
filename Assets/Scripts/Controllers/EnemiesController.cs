@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ScriptableObjectsScripts;
+using System.Collections;
 using UnityEngine;
 
 namespace Controllers

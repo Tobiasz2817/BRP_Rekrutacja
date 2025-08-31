@@ -1,7 +1,7 @@
-﻿using System;
+﻿using UnityEngine.UI;
 using Controllers;
 using UnityEngine;
-using UnityEngine.UI;
+using System;
 
 namespace Ui
 {

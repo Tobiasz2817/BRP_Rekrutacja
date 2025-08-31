@@ -1,7 +1,7 @@
-﻿using System;
-using ScriptableObjectsScripts;
-using UnityEngine;
+﻿using ScriptableObjectsScripts;
 using UnityEngine.UI;
+using UnityEngine;
+using System;
 
 namespace Ui
 {

@@ -1,7 +1,7 @@
 ﻿using ScriptableObjectsScripts;
-using Ui;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
+using Ui;
 
 namespace Controllers
 {
