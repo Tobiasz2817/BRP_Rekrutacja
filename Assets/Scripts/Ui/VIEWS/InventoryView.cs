@@ -15,10 +15,6 @@ namespace Ui
         [SerializeField] private Image Avatar;
         [SerializeField] private Button UseButton;
         [SerializeField] private Button DestroyButton;
-    
-        [Header("Scroll Navigation")]
-        [SerializeField] private ScrollRect _inventorySoulsScrollRect;
-        [SerializeField] private GridLayoutGroup _gridLayout;
 
         private RectTransform _contentParent;
         private GameObject _currentSelectedGameObject;
@@ -75,8 +71,7 @@ namespace Ui
         //A popup about the soul being unusable isn’t needed because we get new functionality.
         private void UseCurrentSoul()
         {
-            Destroy(_currentSelectedGameObject);
-            ClearSoulInformation();
+            DestroyCurrentSoul();
         }
 
         private void DestroyCurrentSoul()

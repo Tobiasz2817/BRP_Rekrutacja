@@ -101,7 +101,7 @@ namespace Ui
         {
             Assert.IsTrue(_selections.Count > 0, "Selections array cannot be empty");
             
-            _selection = GetPrevious(true);
+            _selection = GetPrevious();
             
             if (_isSelectableActive)
                 _eventSystem.SetSelectedGameObject(_selection);
