@@ -1,3 +1,6 @@
-﻿public class PauseView : UiView
+﻿namespace Ui
 {
+    public class PauseView : UiView
+    {
+    }
 }

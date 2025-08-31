@@ -1,4 +1,7 @@
-﻿public class CreditsView : UiView
-{ 
+﻿namespace Ui
+{
+    public class CreditsView : UiView
+    { 
 
+    }
 }

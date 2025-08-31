@@ -1,4 +1,7 @@
-﻿public class ReadMeView : UiView
+﻿namespace Ui
 {
+    public class ReadMeView : UiView
+    {
    
+    }
 }
