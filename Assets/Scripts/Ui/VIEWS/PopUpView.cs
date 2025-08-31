@@ -1,6 +1,7 @@
-﻿using System;
+﻿using UnityEngine.UI;
 using UnityEngine;
-using UnityEngine.UI;
+using System;
+using UI;
 
 public class PopUpView : UiView
 {
@@ -11,7 +12,11 @@ public class PopUpView : UiView
     
     public override void Awake()
     {
-        GetBackButton().onClick.AddListener(() => DestroyView_OnClick(this));
+        GetBackButton().onClick.AddListener(() =>
+        {
+            DestroyView_OnClick(this);
+            SelectionService.SelectPrevious();
+        });
     }
 
     private void OnEnable()
@@ -29,7 +34,10 @@ public class PopUpView : UiView
         ClearPopUp();
         LabelText.text = popUpInfo.Header;
         MessageText.text = popUpInfo.Message;
-
+        
+        GameObject selectionButton = popUpInfo.UseOneButton ? YesButton.gameObject : GetBackButton().gameObject;
+        SelectionService.Select(selectionButton);
+        
         if (popUpInfo.UseOneButton)
         {
             DisableBackButton();
@@ -39,7 +47,9 @@ public class PopUpView : UiView
         if (popUpInfo.Confirm_OnClick != null) YesButton.onClick.AddListener(() => popUpInfo.Confirm_OnClick());
 
         if (popUpInfo.DisableOnConfirm) YesButton.onClick.AddListener(() => DestroyView());
-
+        
+        YesButton.onClick.AddListener(() => { SelectionService.SelectPrevious(); });
+        
         ActiveView();
     }
     

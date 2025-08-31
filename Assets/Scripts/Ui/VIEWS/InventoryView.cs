@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
+using UnityEngine;
+using UI;
 
 public class InventoryView : UiView
 {
@@ -11,6 +12,10 @@ public class InventoryView : UiView
     [SerializeField] private Image Avatar;
     [SerializeField] private Button UseButton;
     [SerializeField] private Button DestroyButton;
+    
+    [Header("Scroll Navigation")]
+    [SerializeField] private ScrollRect _inventorySoulsScrollRect;
+    [SerializeField] private GridLayoutGroup _gridLayout;
 
     private RectTransform _contentParent;
     private GameObject _currentSelectedGameObject;
@@ -20,9 +25,10 @@ public class InventoryView : UiView
     {
         base.Awake();
         _contentParent = (RectTransform)SoulItemPlaceHolder.transform.parent;
+        
         InitializeInventoryItems();
     }
-
+    
     private void InitializeInventoryItems()
     {
         for (int i = 0, j = SoulController.Instance.Souls.Count; i < j; i++)
@@ -34,11 +40,8 @@ public class InventoryView : UiView
         SoulItemPlaceHolder.gameObject.SetActive(false);
     }
 
-    private void OnEnable()
-    {
-        ClearSoulInformation();
-    }
-
+    protected void OnEnable() => ClearSoulInformation();
+    
     private void ClearSoulInformation()
     {
         Description.text = "";
@@ -73,7 +76,14 @@ public class InventoryView : UiView
 
     private void CantUseCurrentSoul()
     {
-        PopUpInformation popUpInfo = new PopUpInformation { DisableOnConfirm = true, UseOneButton = true, Header = "CAN'T USE", Message = "THIS SOUL CANNOT BE USED IN THIS LOCALIZATION" };
+        PopUpInformation popUpInfo = new PopUpInformation
+        {
+            DisableOnConfirm = true, 
+            UseOneButton = true, 
+            Header = "CAN'T USE", 
+            Message = "THIS SOUL CANNOT BE USED IN THIS LOCALIZATION"
+        };
+        
         GUIController.Instance.ShowPopUpMessage(popUpInfo);
     }
 
@@ -102,7 +112,7 @@ public class InventoryView : UiView
         UseButton.onClick.RemoveAllListeners();
         if (active)
         {
-            bool isInCorrectLocalization = GameControlller.Instance.IsCurrentLocalization(_currentSoulInformation.soulItem.UsableInLocalization);
+            bool isInCorrectLocalization = GameController.Instance.IsCurrentLocalization(_currentSoulInformation.soulItem.UsableInLocalization);
             PopUpInformation popUpInfo = new PopUpInformation
             {
                 DisableOnConfirm = isInCorrectLocalization,
@@ -111,7 +121,11 @@ public class InventoryView : UiView
                 Message = "Are you sure you want to USE: " + _currentSoulInformation.soulItem.Name + " ?",
                 Confirm_OnClick = () => UseCurrentSoul(isInCorrectLocalization)
             };
-            UseButton.onClick.AddListener(() => GUIController.Instance.ShowPopUpMessage(popUpInfo));
+            UseButton.onClick.AddListener(() =>
+            {
+                SelectionService.SaveSelection(GetBackButton().gameObject);
+                GUIController.Instance.ShowPopUpMessage(popUpInfo);
+            });
         }
         UseButton.gameObject.SetActive(active);
     }
@@ -129,7 +143,11 @@ public class InventoryView : UiView
                 Message = "Are you sure you want to DESTROY: " + Name.text + " ?",
                 Confirm_OnClick = () => DestroyCurrentSoul()
             };
-            DestroyButton.onClick.AddListener(() => GUIController.Instance.ShowPopUpMessage(popUpInfo));
+            DestroyButton.onClick.AddListener(() =>
+            {
+                SelectionService.SaveSelection(GetBackButton().gameObject);
+                GUIController.Instance.ShowPopUpMessage(popUpInfo);
+            });
         }
 
         DestroyButton.gameObject.SetActive(active);

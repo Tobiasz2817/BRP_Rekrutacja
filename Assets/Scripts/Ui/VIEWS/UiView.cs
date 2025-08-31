@@ -1,17 +1,20 @@
 ﻿using System;
+using UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UiView : MonoBehaviour
 {
-
     [Header("UI VIEW elements")] [SerializeField]
     private bool UnpauseOnClose = false;
 
     [SerializeField] private bool CloseOnNewView = true;
-    [SerializeField] private Button BackButon;
+    [SerializeField] Button BackButon;
 
     private UiView _parentView;
+
+    GameObject _lastSelection;
 
     public virtual void Awake()
     {
@@ -23,11 +26,15 @@ public class UiView : MonoBehaviour
         viewToActive.SetParentView(this);
         viewToActive.ActiveView();
         this.ActiveView(!CloseOnNewView);
+        
+        SelectionService.Select(viewToActive.BackButon.gameObject);
     }
 
     private void DisableView_OnClick(UiView viewToDisable)
     {
         viewToDisable.DisableView();
+        
+        SelectionService.SelectPrevious();
     }
 
     public void DestroyView_OnClick(UiView viewToDisable)
@@ -59,7 +66,7 @@ public class UiView : MonoBehaviour
             _parentView.ActiveView();
         }
         
-        if (UnpauseOnClose) GameControlller.Instance.IsPaused = false;
+        if (UnpauseOnClose) GameController.Instance.IsPaused = false;
 
         this.ActiveView(false);
     }

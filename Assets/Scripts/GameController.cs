@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UI;
+using UnityEngine;
 
 public enum GameLocalization
 {
@@ -9,26 +11,23 @@ public enum GameLocalization
     TOWER
 }
 
-public class GameControlller : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     #region Singleton
 
-    private static GameControlller _instance;
+    private static GameController _instance;
 
-    public static GameControlller Instance
+    public static GameController Instance
     {
         get
         {
-            if (_instance == null) _instance = FindFirstObjectByType<GameControlller>();
+            if (_instance == null) _instance = FindFirstObjectByType<GameController>();
             return _instance;
         }
         set => _instance = value;
     }
 
-    private void Awake()
-    {
-        Instance = this;
-    }
+    private void Awake() => Instance = this;
 
     #endregion
 
