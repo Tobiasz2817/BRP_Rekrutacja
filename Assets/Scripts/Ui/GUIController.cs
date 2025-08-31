@@ -59,13 +59,13 @@ namespace Ui
             viewToActive.ActiveView(() =>
             {
                 ActiveInGameGUI(true);
-                GameEvents.ChangeEnemyNavigation?.Invoke(Navigation.Mode.Automatic);
+                GameEvents.ChangeGameplayNavigation?.Invoke(Navigation.Mode.Automatic);
             });
 
             ActiveInGameGUI(false);
             
             GameController.Instance.IsPaused = true;
-            GameEvents.ChangeEnemyNavigation?.Invoke(Navigation.Mode.None);
+            GameEvents.ChangeGameplayNavigation?.Invoke(Navigation.Mode.None);
             SelectionService.Select(viewToActive.GetBackButton().gameObject, true);
         }
 

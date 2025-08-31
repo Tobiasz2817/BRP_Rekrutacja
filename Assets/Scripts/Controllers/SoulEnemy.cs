@@ -24,10 +24,10 @@ namespace Controllers
             gameObject.SetActive(true);
             
             ActiveSelection();
-            GameEvents.ChangeEnemyNavigation += ChangeNavigation;
+            GameEvents.ChangeGameplayNavigation += ChangeNavigation;
         }
 
-        void OnDestroy() => GameEvents.ChangeEnemyNavigation -= ChangeNavigation;
+        void OnDestroy() => GameEvents.ChangeGameplayNavigation -= ChangeNavigation;
 
         void ChangeNavigation(Navigation.Mode mode)
         {

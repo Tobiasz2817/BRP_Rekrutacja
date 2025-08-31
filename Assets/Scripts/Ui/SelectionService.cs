@@ -115,7 +115,7 @@ namespace Ui
                 last = _selections[i];
                 _selections.RemoveAt(i);
                 
-                if (!onlyActive || last.activeInHierarchy)
+                if (!onlyActive || (last != null && last.activeInHierarchy))
                     break;
             }
 

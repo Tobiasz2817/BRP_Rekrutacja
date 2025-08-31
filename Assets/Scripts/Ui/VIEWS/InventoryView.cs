@@ -152,7 +152,7 @@ namespace Ui
             {
                 nextChildIndex -= 2;
                 
-                if (nextChildIndex < childCount)
+                if (childCount < nextChildIndex)
                     return GetBackButton().gameObject;
             }
             

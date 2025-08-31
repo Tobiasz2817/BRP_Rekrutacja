@@ -30,7 +30,7 @@ namespace Controllers
         
         void Awake() => ConnectCallbacks();
         void OnDestroy() => UnConnectCallbacks();
-
+        
         void ConnectCallbacks()
         {
             GameEvents.EnemyKilled += UpdateScore;
