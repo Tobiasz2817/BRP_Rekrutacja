@@ -3,29 +3,23 @@ using UnityEngine.InputSystem.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Assertions;
-using UnityEngine.UI;
 using UnityEngine;
 
-namespace Ui
+namespace Services
 {
     public static class SelectionService
     {
+        static GameObject _selection;
         static EventSystem _eventSystem;
-        static GraphicRaycaster _raycaster;
         static InputSystemUIInputModule _inputModule;
         
-        static GameObject _selection;
-
         static List<GameObject> _selections;
 
-        static bool _isSelectableActive;
-        
-        public static bool IsSelectableActive()
-        {
-            return _isSelectableActive;
-        }
+        public static bool IsSelectableActive { private set; get; }
 
-        public static void Initialize(GraphicRaycaster raycaster)
+        #region Init
+
+        public static void Initialize()
         {
             _inputModule = EventSystem.current.GetComponent<InputSystemUIInputModule>();
             
@@ -33,8 +27,7 @@ namespace Ui
             
             _eventSystem = EventSystem.current;
             _selections = new();
-            _raycaster = raycaster;
-
+            
             ConnectCallbacks();
         }
 
@@ -45,19 +38,47 @@ namespace Ui
 
         static void ConnectCallbacks()
         {
+            MouseService.OnPositionChange += MouseSelectionActive;
             _inputModule.move.action.performed += HandleMoveAction;
             _inputModule.leftClick.action.performed += HandleLeftClickAction;
         }
         
         static void DisconnectCallbacks()
         {
+            MouseService.OnPositionChange -= MouseSelectionActive;
             _inputModule.move.action.performed -= HandleMoveAction;
             _inputModule.leftClick.action.performed -= HandleLeftClickAction;
         }
 
+        #endregion
+        
+        public static void Select(GameObject selection, bool savePrevious = true)
+        {
+            if (savePrevious) SaveSelection(_selection);
+            
+            _selection = selection;
+            
+            if (IsSelectableActive)
+                SetSelection(_selection);     
+        }
+        
+        public static void SaveSelection(GameObject selection)
+        {
+            _selections.Add(selection);
+        }
+
+        public static void SelectPrevious()
+        {
+            Assert.IsTrue(_selections.Count > 0, "Selections array cannot be empty");
+            
+            GameObject previous = GetPrevious();
+            Select(previous, false);
+        }
+
         static void HandleMoveAction(InputAction.CallbackContext _)
         {
-            DisableMouse();
+            IsSelectableActive = true;
+            MouseService.DisableMouse();
                 
             if (!_eventSystem.currentSelectedGameObject)
             {
@@ -73,43 +94,14 @@ namespace Ui
             if (_eventSystem.currentSelectedGameObject)
                 _selection = _eventSystem.currentSelectedGameObject;
                 
-            if (!_isSelectableActive)
+            if (!IsSelectableActive)
                 _eventSystem.SetSelectedGameObject(null);
         }
 
-        public static void Tick()
+        static void MouseSelectionActive()
         {
-            if (Mouse.current != null && Mouse.current.delta.ReadValue() != Vector2.zero)
-            {   
-                EnableMouse();
-                
-                _eventSystem.SetSelectedGameObject(null, null);
-            }
-        }
-
-        public static void Select(GameObject selection, bool savePrevious = true)
-        {
-            if (savePrevious) SaveSelection(_selection);
-            
-            _selection = selection;
-            
-            if (_isSelectableActive)
-                _eventSystem.SetSelectedGameObject(_selection);       
-        }
-        
-        public static void SaveSelection(GameObject selection)
-        {
-            _selections.Add(selection);
-        }
-
-        public static void SelectPrevious()
-        {
-            Assert.IsTrue(_selections.Count > 0, "Selections array cannot be empty");
-            
-            _selection = GetPrevious();
-            
-            if (_isSelectableActive)
-                _eventSystem.SetSelectedGameObject(_selection);
+            IsSelectableActive = false;
+            SetSelection(null);
         }
         
         static GameObject GetPrevious(bool onlyActive = true)
@@ -123,22 +115,13 @@ namespace Ui
                 if (!onlyActive || (last != null && last.activeInHierarchy))
                     break;
             }
-
+            
             return last;
         }
-
-        static void EnableMouse()
-        {
-            _raycaster.enabled = true;
-            Cursor.visible = true;
-            _isSelectableActive = false;
-        }
         
-        static void DisableMouse()
+        static void SetSelection(GameObject selection)
         {
-            _raycaster.enabled = false;
-            Cursor.visible = false;
-            _isSelectableActive = true;
+            _eventSystem.SetSelectedGameObject(selection);       
         }
     }
 }

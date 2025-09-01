@@ -1,7 +1,7 @@
 ﻿using ScriptableObjectsScripts;
 using UnityEngine.UI;
 using UnityEngine;
-using Ui;
+using Services;
 
 namespace Controllers
 {
@@ -85,7 +85,6 @@ namespace Controllers
             // USE BOW
             GameEvents.EnemyKilled?.Invoke(this, new KillInformation
             {
-                KilledBy = AttackType.Bow,
                 KilledByWeakness = _dto.Weakness == AttackType.Bow,
             });
         }
@@ -95,7 +94,6 @@ namespace Controllers
             // USE SWORD
             GameEvents.EnemyKilled?.Invoke(this, new KillInformation
             {
-                KilledBy = AttackType.Sword,
                 KilledByWeakness = _dto.Weakness == AttackType.Sword,
             });
         }
@@ -130,9 +128,9 @@ namespace Controllers
 
     public struct KillInformation
     {
-        public AttackType KilledBy;
         public bool KilledByWeakness;
-        // we can expand it, can be dmg ... etc...
+        // we can expand it, killed by, can be dmg ... etc...
+        // public AttackType KilledBy;
     }
 
     public enum AttackType

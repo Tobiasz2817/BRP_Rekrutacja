@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine;
 using Controllers;
+using Services;
 
 namespace Ui
 {
@@ -39,8 +40,11 @@ namespace Ui
             SoulItemPlaceHolder.gameObject.SetActive(false);
         }
 
-        protected void OnEnable() => ClearSoulInformation();
-    
+        protected void OnEnable()
+        {
+            ClearSoulInformation();
+        }
+
         private void ClearSoulInformation()
         {
             Description.text = "";

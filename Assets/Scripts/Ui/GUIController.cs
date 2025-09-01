@@ -1,4 +1,5 @@
 ﻿using Controllers;
+using Services;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +18,7 @@ namespace Ui
             DisableOnStartObject.SetActive(false);
             Instance = this;
         
-            SelectionService.Initialize(GetComponent<GraphicRaycaster>());
+            SelectionService.Initialize();
         }
 
         #endregion
@@ -78,7 +79,7 @@ namespace Ui
         
         #region UNITY CALLBACKS
 
-        void Update() => SelectionService.Tick();
+        void Update() => MouseService.Tick();
         
         #endregion
 

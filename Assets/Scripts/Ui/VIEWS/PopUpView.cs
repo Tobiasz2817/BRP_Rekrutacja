@@ -1,4 +1,5 @@
 ﻿using System;
+using Services;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,7 +37,7 @@ namespace Ui
             MessageText.text = popUpInfo.Message;
         
             GameObject selectionButton = popUpInfo.UseOneButton ? YesButton.gameObject : GetBackButton().gameObject;
-            SelectionService.Select(selectionButton, SelectionService.IsSelectableActive());
+            SelectionService.Select(selectionButton, SelectionService.IsSelectableActive);
         
             if (popUpInfo.UseOneButton)
             {
