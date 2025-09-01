@@ -34,8 +34,6 @@ namespace Ui
         private void DisableView_OnClick(UiView viewToDisable)
         {
             viewToDisable.DisableView();
-        
-            SelectionService.SelectPrevious();
         }
 
         public void DestroyView_OnClick(UiView viewToDisable)
@@ -70,6 +68,7 @@ namespace Ui
             if (UnpauseOnClose) GameController.Instance.IsPaused = false;
 
             this.ActiveView(false);
+            SelectionService.SelectPrevious();
         }
 
         public void DestroyView()
@@ -80,6 +79,7 @@ namespace Ui
             }
 
             Destroy(this.gameObject);
+            SelectionService.SelectPrevious();
         }
 
         public void DisableBackButton()

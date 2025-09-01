@@ -20,6 +20,11 @@ namespace Ui
 
         static bool _isSelectableActive;
         
+        public static bool IsSelectableActive()
+        {
+            return _isSelectableActive;
+        }
+
         public static void Initialize(GraphicRaycaster raycaster)
         {
             _inputModule = EventSystem.current.GetComponent<InputSystemUIInputModule>();

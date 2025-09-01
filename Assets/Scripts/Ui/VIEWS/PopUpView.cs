@@ -16,7 +16,6 @@ namespace Ui
             GetBackButton().onClick.AddListener(() =>
             {
                 DestroyView_OnClick(this);
-                SelectionService.SelectPrevious();
             });
         }
 
@@ -37,7 +36,7 @@ namespace Ui
             MessageText.text = popUpInfo.Message;
         
             GameObject selectionButton = popUpInfo.UseOneButton ? YesButton.gameObject : GetBackButton().gameObject;
-            SelectionService.Select(selectionButton);
+            SelectionService.Select(selectionButton, SelectionService.IsSelectableActive());
         
             if (popUpInfo.UseOneButton)
             {
@@ -48,8 +47,6 @@ namespace Ui
             if (popUpInfo.Confirm_OnClick != null) YesButton.onClick.AddListener(() => popUpInfo.Confirm_OnClick());
 
             if (popUpInfo.DisableOnConfirm) YesButton.onClick.AddListener(() => DestroyView());
-        
-            YesButton.onClick.AddListener(() => { SelectionService.SelectPrevious(); });
         
             ActiveView();
         }
