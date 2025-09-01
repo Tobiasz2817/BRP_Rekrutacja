@@ -67,7 +67,8 @@ namespace Ui
             
             GameController.Instance.IsPaused = true;
             GameEvents.ChangeGameplayNavigation?.Invoke(Navigation.Mode.None);
-            SelectionService.Select(viewToActive.GetBackButton().gameObject, true);
+            
+            SelectionService.Select(viewToActive.GetEnableSelection(), true);
         }
 
         public void ButtonQuit()

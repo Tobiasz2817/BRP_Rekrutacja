@@ -75,6 +75,11 @@ namespace Services
             Select(previous, false);
         }
 
+        public static void ClearPreviousSelection()
+        {
+            GetPrevious(false);
+        }
+
         static void HandleMoveAction(InputAction.CallbackContext _)
         {
             IsSelectableActive = true;

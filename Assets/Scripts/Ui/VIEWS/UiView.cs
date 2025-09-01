@@ -29,7 +29,12 @@ namespace Ui
             viewToActive.ActiveView();
             this.ActiveView(!CloseOnNewView);
         
-            SelectionService.Select(viewToActive.BackButon.gameObject);
+            SelectionService.Select(viewToActive.GetEnableSelection());
+        }
+
+        public virtual GameObject GetEnableSelection()
+        {
+            return BackButon.gameObject;
         }
 
         private void DisableView_OnClick(UiView viewToDisable)
