@@ -30,7 +30,7 @@ namespace Services
             
             ConnectCallbacks();
         }
-
+        
         public static void Disable()
         {
             DisconnectCallbacks();
@@ -60,6 +60,12 @@ namespace Services
             
             if (IsSelectableActive)
                 SetSelection(_selection);     
+        }
+        
+        public static void RefreshSelection()
+        {
+            if (_eventSystem.currentSelectedGameObject != null)
+                _eventSystem.SetSelectedGameObject(_eventSystem.currentSelectedGameObject);
         }
         
         public static void SaveSelection(GameObject selection)

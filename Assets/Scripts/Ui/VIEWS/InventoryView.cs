@@ -44,21 +44,6 @@ namespace Ui
             SoulItemPlaceHolder.gameObject.SetActive(false);
         }
 
-        public override GameObject GetEnableSelection()
-        {
-            GameObject child = _contentParent.gameObject.GetFirstActiveChild();
-            if (child != null)
-                SoulItem_OnClick(child.GetComponent<SoulInformation>());
-            
-            return _contentParent.gameObject.GetFirstActiveChild() ?? GetBackButton().gameObject;
-        }
-
-        protected void OnEnable()
-        {
-            ClearSoulInformation();
-            SelectionService.Select(GetEnableSelection());
-        }
-
         private void ClearSoulInformation()
         {
             Description.text = "";
@@ -96,7 +81,6 @@ namespace Ui
         private void DestroyCurrentSoul()
         {
             SelectionService.ClearPreviousSelection();
-            
             GameObject soulNeighbour = GetCurrentSoulNeighbour();
             
             Destroy(_currentSelectedGameObject);
@@ -158,6 +142,18 @@ namespace Ui
             }
 
             DestroyButton.gameObject.SetActive(active);
+        }
+        
+        public override void SelectViewElement()
+        {
+            ClearSoulInformation();
+            
+            GameObject child = _contentParent.gameObject.GetFirstActiveChild();
+            if (child != null)
+                SoulItem_OnClick(child.GetComponent<SoulInformation>());
+            
+            GameObject target = _contentParent.gameObject.GetFirstActiveChild() ?? GetBackButton().gameObject;
+            SelectionService.Select(target);
         }
 
         /// <summary>

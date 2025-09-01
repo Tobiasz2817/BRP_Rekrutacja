@@ -1,7 +1,7 @@
-﻿using System;
-using Services;
+﻿using UnityEngine.UI;
 using UnityEngine;
-using UnityEngine.UI;
+using Services;
+using System;
 
 namespace Ui
 {
@@ -17,6 +17,7 @@ namespace Ui
             GetBackButton().onClick.AddListener(() =>
             {
                 DestroyView_OnClick(this);
+                SelectionService.ClearPreviousSelection();
             });
         }
 

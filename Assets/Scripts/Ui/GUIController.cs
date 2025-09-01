@@ -1,7 +1,7 @@
-﻿using Controllers;
-using Services;
+﻿using UnityEngine.UI;
+using Controllers;
 using UnityEngine;
-using UnityEngine.UI;
+using Services;
 
 namespace Ui
 {
@@ -60,6 +60,8 @@ namespace Ui
             viewToActive.ActiveView(() =>
             {
                 ActiveInGameGUI(true);
+                         
+                SelectionService.RefreshSelection();
                 GameEvents.ChangeGameplayNavigation?.Invoke(Navigation.Mode.Automatic);
             });
 
@@ -67,8 +69,6 @@ namespace Ui
             
             GameController.Instance.IsPaused = true;
             GameEvents.ChangeGameplayNavigation?.Invoke(Navigation.Mode.None);
-            
-            SelectionService.Select(viewToActive.GetEnableSelection(), true);
         }
 
         public void ButtonQuit()
@@ -80,8 +80,11 @@ namespace Ui
         
         #region UNITY CALLBACKS
 
-        void Update() => MouseService.Tick();
-        
+        void Update()
+        {
+            MouseService.Tick();
+        }
+
         #endregion
 
     }
