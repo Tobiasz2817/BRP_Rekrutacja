@@ -75,6 +75,7 @@ namespace Ui
         //A popup about the soul being unusable isn’t needed because we get new functionality.
         private void UseCurrentSoul()
         {
+            ScoreController.Instance.AddScore(_currentSoulInformation.soulItem.Points);
             DestroyCurrentSoul();
         }
 
