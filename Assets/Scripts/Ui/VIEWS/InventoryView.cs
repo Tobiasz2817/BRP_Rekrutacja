@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using Controllers;
 using Services;
+using Utility;
 
 namespace Ui
 {
@@ -21,6 +22,9 @@ namespace Ui
         private GameObject _currentSelectedGameObject;
         private SoulInformation _currentSoulInformation;
         
+        // It's -1 because of first soul template
+        int ContentChildCount => _contentParent.childCount - 1;
+        
         public override void Awake()
         {
             base.Awake();
@@ -33,16 +37,11 @@ namespace Ui
         {
             for (int i = 0, j = SoulController.Instance.Souls.Count; i < j; i++)
             {
-                SoulInformation newSoul = Instantiate(SoulItemPlaceHolder.gameObject, _contentParent).GetComponent<SoulInformation>();
+                SoulInformation newSoul = Instantiate(SoulItemPlaceHolder, _contentParent);
                 newSoul.SetSoulItem(SoulController.Instance.Souls[i], () => SoulItem_OnClick(newSoul));
             }
 
             SoulItemPlaceHolder.gameObject.SetActive(false);
-        }
-
-        protected void OnEnable()
-        {
-            ClearSoulInformation();
         }
 
         private void ClearSoulInformation()
@@ -81,8 +80,14 @@ namespace Ui
 
         private void DestroyCurrentSoul()
         {
+            SelectionService.ClearPreviousSelection();
+            GameObject soulNeighbour = GetCurrentSoulNeighbour();
+            
             Destroy(_currentSelectedGameObject);
             ClearSoulInformation();
+            
+            if (soulNeighbour != null)
+                SoulItem_OnClick(soulNeighbour.GetComponent<SoulInformation>());
         }
 
         private void SetupUseButton(bool active)
@@ -104,9 +109,7 @@ namespace Ui
 
                     UseButton.onClick.AddListener(() =>
                     {
-                        SelectionService.SaveSelection(GetInventorySelection());
-
-                        ScoreController.Instance.AddScore(_currentSoulInformation.soulItem.Points);
+                        SelectionService.SaveSelection(GetNextSelection());
                         GUIController.Instance.ShowPopUpMessage(popUpInfo);
                     });
                 }
@@ -133,30 +136,56 @@ namespace Ui
 
                 DestroyButton.onClick.AddListener(() =>
                 {
-                    SelectionService.SaveSelection(GetInventorySelection());
+                    SelectionService.SaveSelection(GetNextSelection());
                     GUIController.Instance.ShowPopUpMessage(popUpInfo);
                 });
             }
 
             DestroyButton.gameObject.SetActive(active);
         }
+        
+        public override void SelectViewElement()
+        {
+            ClearSoulInformation();
+            
+            GameObject child = _contentParent.gameObject.GetFirstActiveChild();
+            if (child != null)
+                SoulItem_OnClick(child.GetComponent<SoulInformation>());
+            
+            GameObject target = _contentParent.gameObject.GetFirstActiveChild() ?? GetBackButton().gameObject;
+            SelectionService.Select(target);
+        }
 
-        GameObject GetInventorySelection()
+        /// <summary>
+        /// Finding next neighbour if didn't exist will return from the closest left side
+        /// </summary>
+        /// <returns> returns game objects neighbour</returns>
+        GameObject GetCurrentSoulNeighbour()
         {
             Transform selectedTransform = _currentSelectedGameObject.transform;
-            int childCount = _contentParent.childCount - 1;
+            int childCount = ContentChildCount;
             
             int nextChildIndex = selectedTransform.GetSiblingIndex() + 1;
 
             if (nextChildIndex > childCount)
             {
                 nextChildIndex -= 2;
-                
+
                 if (childCount < nextChildIndex)
-                    return GetBackButton().gameObject;
+                    return null;
             }
             
             return _contentParent.GetChild(nextChildIndex).gameObject;
+        }
+
+        GameObject GetNextSelection()
+        {
+            GameObject nextSoul = GetCurrentSoulNeighbour();
+
+            if (nextSoul == null)
+                return GetBackButton().gameObject;
+            
+            return nextSoul;
         }
     }
 }

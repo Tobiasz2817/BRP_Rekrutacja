@@ -1,7 +1,7 @@
-﻿using System;
-using Services;
+﻿using UnityEngine.UI;
 using UnityEngine;
-using UnityEngine.UI;
+using Services;
+using System;
 
 namespace Ui
 {
@@ -17,6 +17,7 @@ namespace Ui
             GetBackButton().onClick.AddListener(() =>
             {
                 DestroyView_OnClick(this);
+                SelectionService.ClearPreviousSelection();
             });
         }
 
@@ -37,7 +38,7 @@ namespace Ui
             MessageText.text = popUpInfo.Message;
         
             GameObject selectionButton = popUpInfo.UseOneButton ? YesButton.gameObject : GetBackButton().gameObject;
-            SelectionService.Select(selectionButton, SelectionService.IsSelectableActive);
+            SelectionService.Select(selectionButton);
         
             if (popUpInfo.UseOneButton)
             {

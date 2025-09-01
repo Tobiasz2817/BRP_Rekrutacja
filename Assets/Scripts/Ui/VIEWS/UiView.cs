@@ -27,9 +27,13 @@ namespace Ui
         {
             viewToActive.SetParentView(this);
             viewToActive.ActiveView();
+            
             this.ActiveView(!CloseOnNewView);
-        
-            SelectionService.Select(viewToActive.BackButon.gameObject);
+        }
+
+        public virtual void SelectViewElement()
+        {
+            SelectionService.Select(BackButon.gameObject);
         }
 
         private void DisableView_OnClick(UiView viewToDisable)
@@ -56,7 +60,11 @@ namespace Ui
         {
             if (onBackButtonAction != null) BackButon.onClick.AddListener(() => onBackButtonAction());
 
-            if (!gameObject.activeSelf) this.ActiveView(true);
+            if (!gameObject.activeSelf)
+            {
+                this.ActiveView(true);
+                SelectViewElement();
+            }
         }
 
         public void DisableView()

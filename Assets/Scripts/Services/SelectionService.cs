@@ -30,7 +30,7 @@ namespace Services
             
             ConnectCallbacks();
         }
-
+        
         public static void Disable()
         {
             DisconnectCallbacks();
@@ -62,6 +62,12 @@ namespace Services
                 SetSelection(_selection);     
         }
         
+        public static void RefreshSelection()
+        {
+            if (_eventSystem.currentSelectedGameObject != null)
+                _eventSystem.SetSelectedGameObject(_eventSystem.currentSelectedGameObject);
+        }
+        
         public static void SaveSelection(GameObject selection)
         {
             _selections.Add(selection);
@@ -73,6 +79,11 @@ namespace Services
             
             GameObject previous = GetPrevious();
             Select(previous, false);
+        }
+
+        public static void ClearPreviousSelection()
+        {
+            GetPrevious(false);
         }
 
         static void HandleMoveAction(InputAction.CallbackContext _)
