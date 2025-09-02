@@ -64,8 +64,12 @@ namespace Services
         
         public static void RefreshSelection()
         {
-            if (_eventSystem.currentSelectedGameObject != null)
-                _eventSystem.SetSelectedGameObject(_eventSystem.currentSelectedGameObject);
+            if (IsSelectableActive)
+            {
+                Assert.IsTrue(_eventSystem.currentSelectedGameObject != null, "Only active selection can be refreshed");
+            
+                SetSelection(_eventSystem.currentSelectedGameObject);
+            }
         }
         
         public static void SaveSelection(GameObject selection)
@@ -94,7 +98,7 @@ namespace Services
             if (!_eventSystem.currentSelectedGameObject)
             {
                 GameObject toSelect = _selection ?? GetPrevious(false) ?? _eventSystem.firstSelectedGameObject;
-                _eventSystem.SetSelectedGameObject(toSelect);
+                SetSelection(toSelect);
             }
             else
                 _selection = _eventSystem.currentSelectedGameObject;
@@ -106,7 +110,7 @@ namespace Services
                 _selection = _eventSystem.currentSelectedGameObject;
                 
             if (!IsSelectableActive)
-                _eventSystem.SetSelectedGameObject(null);
+                SetSelection(null);
         }
 
         static void MouseSelectionActive()

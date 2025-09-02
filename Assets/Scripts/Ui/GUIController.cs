@@ -60,7 +60,7 @@ namespace Ui
             viewToActive.ActiveView(() =>
             {
                 ActiveInGameGUI(true);
-                         
+                
                 SelectionService.RefreshSelection();
                 GameEvents.ChangeGameplayNavigation?.Invoke(Navigation.Mode.Automatic);
             });
